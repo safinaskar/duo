@@ -2,6 +2,7 @@
 
 #include "multiboot.h"
 
+#include "kmesg.h"
 
 // TODO: Begin of абзац
 #include "io.h"
@@ -139,19 +140,14 @@ static void debug_keyboard(){
 
 // TODO: End of абзац
 
-#include "kmesg.h"
 extern "C" void kernel_main(uint32_t magic, multiboot_info_t *){
 	/* I init console first, because I want to be able to print to it anytime */
 	console_init();
 
+	// TODO: абзац до конца
 #define K(x) kmesg_write(x, __builtin_strlen(x))
-	K("auto");
-	K("manually");
-	K("1a\n2a");
-	K("1m\n2m\n");
-	K("");
+	K("sTarting\n");
 
-	// TODO: абзац
 	kprintf("Info: starting");
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC){
 		kprintf("Warning: Multiboot magic incorrect");
