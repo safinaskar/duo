@@ -6,7 +6,7 @@
 
 #include "console.h"
 
-static volatile uint8_t *const screen = (volatile uint8_t *)0xb8000;
+static volatile uint8_t *const screen = reinterpret_cast<volatile uint8_t *>(0xb8000);
 
 static const int rows = 25;
 static const int cols = 80;
@@ -63,7 +63,7 @@ static void new_line(){
 
 /* Always returns nbyte */
 ssize_t console_write(const void *buf, size_t nbyte){
-	const char *cbuf = (const char *)buf;
+	const char *cbuf = static_cast<const char *>(buf);
 
 	for(size_t i = 0; i != nbyte; ++i){
 		switch(cbuf[i]){
@@ -71,7 +71,7 @@ ssize_t console_write(const void *buf, size_t nbyte){
 				new_line();
 				break;
 			default:
-				screen[2 * (row * cols + col)] = cbuf[i];
+				screen[2 * (row * cols + col)] = uint8_t(cbuf[i]);
 				++col;
 
 				if(col == cols){
@@ -84,5 +84,5 @@ ssize_t console_write(const void *buf, size_t nbyte){
 
 	set_cursor();
 
-	return nbyte;
+	return ssize_t(nbyte);
 }

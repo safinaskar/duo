@@ -2,7 +2,7 @@
 // /dev/kmesg is for kernel messages, as opposed to /dev/console, which is general console
 // kprintf is based on kmesg_write
 
-#include <libfreestanding/string.h>
+#include <frees/string.h>
 
 #include "console.h"
 
@@ -14,33 +14,31 @@
 ssize_t kmesg_write(const void *buf, size_t nbyte){
 	static bool new_line = true;
 
-	const char *cbuf = (const char *)buf;
+	const char *cbuf = static_cast<const char *>(buf);
 
-	size_t begin = 0; /* Begin of current line */
-	size_t i = 0; /* Current symbol */
-
-	if(!new_line){
-		goto skip;
+	if(nbyte == 0){
+		return 0;
 	}
 
-	for(; i != nbyte; ++i){
-		if(i == begin){
-			console_write(MARK, strlen(MARK));
-		}
+	if(new_line){
+		console_write(MARK, strlen(MARK));
+	}
 
-skip:
+	for(size_t i = 0; i != nbyte; ++i){
 		if(cbuf[i] == '\n'){
-			console_write(cbuf + begin, i - begin + 1);
-			begin = i + 1;
+			console_write(cbuf, i + 1);
+			new_line = true;
+			return kmesg_write(cbuf + i + 1, nbyte - i - 1);
 		}
 	}
 
-	if(begin == nbyte){
-		new_line = true;
-	}else{
-		console_write(cbuf + begin, nbyte - begin);
-		new_line = false;
-	}
+	console_write(cbuf, nbyte);
+	new_line = false;
 
-	return nbyte;
+	return ssize_t(nbyte);
+}
+
+int kmesg_fputc(int c){
+	kmesg_write(&c, 1);
+	return static_cast<unsigned char>(c);
 }

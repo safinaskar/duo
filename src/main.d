@@ -1,3 +1,4 @@
-src/main.o: src/main.cpp libfreestanding/include/stdint.h src/multiboot.h \
- src/kmesg.h libfreestanding/include/sys/types.h src/io.h src/console.h \
- libfreestanding/include/stdarg.h
+src/main.o: src/main.cpp frees/include/stdint.h src/multiboot2.h \
+ src/memory.h frees/include/stddef.h src/console.h \
+ frees/include/sys/types.h src/kprintf.h frees/include/frees/stdarg.h \
+ src/io.h

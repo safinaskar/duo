@@ -1,1 +1,1 @@
-src/io.o: src/io.cpp src/io.h libfreestanding/include/stdint.h
+src/io.o: src/io.cpp src/io.h frees/include/stdint.h
