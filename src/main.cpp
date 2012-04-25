@@ -1,13 +1,14 @@
 #include <stdint.h>
 
-#include "multiboot2.h"
+#include "../kprintfm/multiboot2.h"
+
+#include "../kprintfm/console.h"
+#include "../kprintfm/kprintf.h"
 
 #include "memory.h"
-#include "console.h" // console_init
-#include "kprintf.h"
 
 // TODO: Begin of абзац
-#include "io.h"
+#include "../kprintfm/io.h"
 
 //
 // Keyboard driver, depends on low level I/O
@@ -60,7 +61,7 @@ extern "C" void kernel_main(uint32_t magic, const void *mbi /* Multiboot Info St
 	/** Starting **/
 
 	console_init();
-	kprintf("Info: starting\n");
+	kprintf("Info: starting, welcome to Duo!\n");
 
 
 	/** Multiboot stuff **/
@@ -90,7 +91,7 @@ extern "C" void kernel_main(uint32_t magic, const void *mbi /* Multiboot Info St
 	}
 
 
-	/** Memory (depends on Multiboot stuff) **/
+	/** Memory (will depend on Multiboot stuff) **/
 
 	memory = (void *)0x100000;
 

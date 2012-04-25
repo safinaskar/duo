@@ -1,5 +1,7 @@
 *.o
 *.a
 *.kate-swp
+*.d
 
 /duo
+/kprintfm/kprintf.cpp

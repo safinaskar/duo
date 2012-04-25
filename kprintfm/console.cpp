@@ -1,4 +1,4 @@
-// This file controls /dev/console (there is no such file yet (as Apr 2012), but it will be in future)
+// This file controls /dev/console (as opposed to /dev/kmsg, which is located in kmsg.c). There is no such files yet (as Apr 2012), but they will be in the future
 
 #include <stdint.h>
 
@@ -14,6 +14,15 @@ static const int cols = 80;
 static int row;
 static int col;
 
+static void set_cursor(){
+	int pos = row * 80 + col;
+
+	outb(0x3d4, 0x0f);
+	outb(0x3d5, uint8_t(pos));
+	outb(0x3d4, 0x0e);
+	outb(0x3d5, uint8_t(pos >> 8));
+}
+
 static void clear(){
 	// We cannot use memset, because `screen' is `volatile'
 	for(int i = 0; i != rows * cols; ++i){
@@ -22,15 +31,8 @@ static void clear(){
 
 	row = 0;
 	col = 0;
-}
 
-static void set_cursor(){
-	int pos = row * 80 + col;
-
-	outb(0x3d4, 0x0f);
-	outb(0x3d5, uint8_t(pos));
-	outb(0x3d4, 0x0e);
-	outb(0x3d5, uint8_t(pos >> 8));
+	set_cursor();
 }
 
 void console_init(){
@@ -41,7 +43,6 @@ void console_init(){
 
 	// We need to clear screen at boot time, because Qemu doesn't do this
 	clear();
-	set_cursor();
 }
 
 static void new_line(){
