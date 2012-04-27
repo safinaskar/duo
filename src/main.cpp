@@ -34,6 +34,8 @@ const char *key_names[128] = { // TODO: проверить, добавить н�
 	/* 0x50 */ 0,           0,           0,           0,           0,           0,           0,           "F11",       "F12"
 };
 
+static void debug_keyboard() __attribute__((noreturn));
+
 static void debug_keyboard(){
 	kprintf("Welcome to debug_keyboard\n");
 	kprintf("State  Scan  Name\n");
@@ -56,7 +58,9 @@ static void debug_keyboard(){
 
 // TODO: End of абзац
 
-extern "C" void kernel_main(uint32_t magic, const void *mbi /* Multiboot Info Structure */){
+extern "C" void kernel_main(uint32_t magic, const void *mbi /* Multiboot Info Structure */) __attribute__((noreturn));
+
+extern "C" void kernel_main(uint32_t magic, const void *mbi){
 
 	/** Starting **/
 
@@ -72,14 +76,14 @@ extern "C" void kernel_main(uint32_t magic, const void *mbi /* Multiboot Info St
 	}
 
 	{ /* LATER: сделать нормальное управление памятью, и для этого дописать этот блок. Если загрузчик не дал инфы про память, то паниковать */
-		const multiboot_tag *tag = (const multiboot_tag *)((char *)mbi + 8 /* Fixed part of mbi */);
+		const multiboot_tag *tag = (const multiboot_tag *)((const char *)mbi + 8 /* Fixed part of mbi */);
 
 		while(tag->type != MULTIBOOT_TAG_TYPE_END){
-			int size = ((tag->size - 1) / MULTIBOOT_TAG_ALIGN + 1) * MULTIBOOT_TAG_ALIGN;
+			int size = ((int(tag->size) - 1) / MULTIBOOT_TAG_ALIGN + 1) * MULTIBOOT_TAG_ALIGN;
 
 			if(tag->type == MULTIBOOT_TAG_TYPE_MMAP){
 				const multiboot_tag_mmap *mmap = (const multiboot_tag_mmap *)tag;
-				int es = mmap->entry_size;
+				int es = int(mmap->entry_size);
 
 				for(const char *cent = (const char *)&(mmap->entries); cent != (const char *)mmap + size; cent += es){
 					//const multiboot_mmap_entry *ent = (const multiboot_mmap_entry *)cent;

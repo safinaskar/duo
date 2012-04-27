@@ -7,13 +7,15 @@ set -e
 TAB="$(printf '\t\n')"
 
 # $SOURCES will contain new line symbols on all machines I tested. But this doesn't matter for my code
-SOURCES="$(echo kprintfm/start.S && find * -name '*.cpp' && echo kprintfm/kprintf.cpp)"
+SOURCES="$({ echo kprintfm/start.S && find * -name '*.cpp' && echo kprintfm/kprintf.cpp; } | sort | uniq)"
 
 # But $OBJS will not contain new line symbols. It will contain spaces
 OBJS="$(echo "$SOURCES" | tr ' ' '\n' | sed 's/\.[^.]*$/.o/' | tr '\n' ' ')"
 
 for SOURCE in $SOURCES; do
-	: > "${SOURCE%.*}.d"
+	if [ ! -f "${SOURCE%.*}.d" ]; then
+		: > "${SOURCE%.*}.d"
+	fi
 done
 
 {
@@ -22,11 +24,13 @@ done
 
 CXX            = g++
 
-WARNS          = -Wall -Wextra -Wformat=2 -Wuninitialized -Winit-self -Wmissing-include-dirs -Wswitch-default -Wunused -Wunused-local-typedefs -Wuninitialized -Wstrict-aliasing=1 -Wstrict-overflow=5 -Wfloat-equal -Wundef -Wshadow -Wunsafe-loop-optimizations -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wsign-conversion -Wlogical-op -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute -Wpacked -Wredundant-decls -Wunreachable-code -Winline -Wdisabled-optimization -Wstack-protector -Woverlength-strings -Wcomment -Wunused-macros
+WARNS          = -Wall -Wextra -Wformat=2 -Wuninitialized -Winit-self -Wmissing-include-dirs -Wswitch-default -Wunused -Wunused-local-typedefs -Wuninitialized -Wstrict-aliasing=1 -Wstrict-overflow=5 -Wfloat-equal -Wundef -Wshadow -Wunsafe-loop-optimizations -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wsign-conversion -Wlogical-op -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute -Wredundant-decls -Wunreachable-code -Winline -Wdisabled-optimization -Wstack-protector -Woverlength-strings -Wcomment -Wunused-macros
 CXXWARNS       = $(WARNS) -Wctor-dtor-privacy -Wnon-virtual-dtor -Wstrict-null-sentinel -Wold-style-cast -Woverloaded-virtual -Wsign-promo
 
 CPPFLAGS       =
-CXXFLAGS       = -O3 -g $(CXXWARNS) -Wno-missing-field-initializers -fno-rtti
+
+# Strict aliasing is not for OS kernel
+CXXFLAGS       = -O3 -g $(CXXWARNS) -Wno-missing-field-initializers -fno-rtti -fno-strict-aliasing
 ASFLAGS        =
 LDFLAGS        = -O3
 
@@ -35,6 +39,7 @@ DUO_FLAGS      = -m32
 
 # Unfortunately, -ffreestanding is valid for C++, but -fno-hosted is invalid o_O. -ffreestanding is equivalent to -fno-builtin, except for `main' function (proof: gcc sources)
 DUO_CPPFLAGS   = -MMD -nostdinc -Ifrees/include
+
 DUO_CXXFLAGS   = -std=gnu++98 -ffreestanding -fno-rtti -fno-stack-protector
 
 EOF
@@ -54,7 +59,7 @@ EOF
 		case "$SOURCE" in
 			*.cpp)
 				sed 's/^TAB/\t/' << "EOF" # I use "TAB" to prevent editors from replacing tab with spaces
-TAB@echo "  CC      $@" && $(CXX) -c $(DUO_FLAGS) $(DUO_CPPFLAGS) $(CPPFLAGS) $(DUO_CXXFLAGS) $(CXXFLAGS) -o $@ $<
+TAB@echo "  CXX     $@" && $(CXX) -c $(DUO_FLAGS) $(DUO_CPPFLAGS) $(CPPFLAGS) $(DUO_CXXFLAGS) $(CXXFLAGS) -o $@ $<
 
 EOF
 				;;

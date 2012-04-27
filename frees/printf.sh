@@ -14,13 +14,15 @@ ${BEFORE}
 // REAL: проверка переполнения result'а
 // REAL: поддержка signed
 
-// ARGS should content last ',', for example: 'FILE *__restrict__ stream,'
+// REAL: проверка на переполнение возвращаемого int'а в случае, если size_t больше int
+
+// LONG_ARGS should content last ',', for example: 'FILE *__restrict__ stream,'
 
 int ${VPREFIX}printf(${LONG_ARGS} const char *__restrict__ format, va_list ap){
 	char buf[ITOA_SIZE]; /* for itoa */
 	char *buf_end = buf + ITOA_SIZE - 1;
 
-	size_t result = 0;
+	int result = 0;
 
 	for(; *format != 0;){
 		if(*format == '%'){
@@ -83,8 +85,8 @@ int ${VPREFIX}printf(${LONG_ARGS} const char *__restrict__ format, va_list ap){
 					{
 						const char *str = va_arg(ap, const char *);
 						size_t len = strlen(str);
-						${DATA_ACTION}(str, len);
-						result += len;
+						${DATA_ACTION}(str, size_t(len));
+						result += int(len);
 					}
 					break;
 
@@ -112,9 +114,11 @@ int ${VPREFIX}printf(${LONG_ARGS} const char *__restrict__ format, va_list ap){
 							case 2:
 								num = va_arg(ap, unsigned long long);
 								break;
+							default:
+								break; /* Make compiler happy. This should never happen */
 						}
 
-						unsigned base;
+						int base = -1; /* Make compiler happy */
 
 						switch(*format){
 							case 'o':
@@ -126,11 +130,13 @@ int ${VPREFIX}printf(${LONG_ARGS} const char *__restrict__ format, va_list ap){
 							case 'x':
 								base = 16;
 								break;
+							default:
+								break; /* This should never happen */
 						}
 
 						const char *str = duo_printf_itoa_pad(num, base, buf, pad, width);
 						int len = buf_end - str;
-						${DATA_ACTION}(str, len);
+						${DATA_ACTION}(str, size_t(len));
 						result += len;
 					}
 					break;

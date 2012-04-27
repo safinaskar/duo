@@ -11,4 +11,6 @@ typedef __UINT16_TYPE__ uint16_t;
 typedef __UINT32_TYPE__ uint32_t;
 typedef __UINT64_TYPE__ uint64_t;
 
+#define SIZE_MAX __SIZE_MAX__
+
 #endif // ! _DUO_STDINT_H

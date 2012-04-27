@@ -111,7 +111,7 @@ struct multiboot_header_tag_information_request
   multiboot_uint16_t type;
   multiboot_uint16_t flags;
   multiboot_uint32_t size;
-  multiboot_uint32_t requests[0];
+  multiboot_uint32_t requests[1];
 };
 
 struct multiboot_header_tag_address
@@ -192,7 +192,7 @@ struct multiboot_tag_string
 {
   multiboot_uint32_t type;
   multiboot_uint32_t size;
-  char string[0];
+  char string[1];
 };
 
 struct multiboot_tag_module
@@ -201,7 +201,7 @@ struct multiboot_tag_module
   multiboot_uint32_t size;
   multiboot_uint32_t mod_start;
   multiboot_uint32_t mod_end;
-  char cmdline[0];
+  char cmdline[1];
 };
 
 struct multiboot_tag_basic_meminfo
@@ -227,7 +227,7 @@ struct multiboot_tag_mmap
   multiboot_uint32_t size;
   multiboot_uint32_t entry_size;
   multiboot_uint32_t entry_version;
-  struct multiboot_mmap_entry entries[0];  
+  struct multiboot_mmap_entry entries[1];
 };
 
 struct multiboot_vbe_info_block
@@ -275,14 +275,14 @@ struct multiboot_tag_framebuffer
 {
   struct multiboot_tag_framebuffer_common common;
 
-  union
+  union some_union
   {
-    struct
+    struct foo
     {
       multiboot_uint16_t framebuffer_palette_num_colors;
-      struct multiboot_color framebuffer_palette[0];
+      struct multiboot_color framebuffer_palette[1];
     };
-    struct
+    struct bar
     {
       multiboot_uint8_t framebuffer_red_field_position;
       multiboot_uint8_t framebuffer_red_mask_size;
@@ -301,7 +301,7 @@ struct multiboot_tag_elf_sections
   multiboot_uint32_t num;
   multiboot_uint32_t entsize;
   multiboot_uint32_t shndx;
-  char sections[0];
+  char sections[1];
 };
 
 struct multiboot_tag_apm
@@ -340,28 +340,28 @@ struct multiboot_tag_smbios
   multiboot_uint8_t major;
   multiboot_uint8_t minor;
   multiboot_uint8_t reserved[6];
-  multiboot_uint8_t tables[0];
+  multiboot_uint8_t tables[1];
 };
 
 struct multiboot_tag_old_acpi
 {
   multiboot_uint32_t type;
   multiboot_uint32_t size;
-  multiboot_uint8_t rsdp[0];
+  multiboot_uint8_t rsdp[1];
 };
 
 struct multiboot_tag_new_acpi
 {
   multiboot_uint32_t type;
   multiboot_uint32_t size;
-  multiboot_uint8_t rsdp[0];
+  multiboot_uint8_t rsdp[1];
 };
 
 struct multiboot_tag_network
 {
   multiboot_uint32_t type;
   multiboot_uint32_t size;
-  multiboot_uint8_t dhcpack[0];
+  multiboot_uint8_t dhcpack[1];
 };
 
 #endif /* ! ASM_FILE */

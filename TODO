@@ -8,11 +8,7 @@ Info
 
 Маркер TODO
 -----------
-разбить на модули!! !! panic_internal и panic_external!!
-
-Сделать полную проверку на переполнение
-
-Поставить везде noreturn и format
+panic_internal и panic_external!!
 
 Прочие маркеры
 --------------

@@ -64,6 +64,10 @@ static void new_line(){
 
 /* Always returns nbyte */
 ssize_t console_write(const void *buf, size_t nbyte){
+	if(nbyte > (SIZE_MAX - 1) / 2){
+		nbyte = (SIZE_MAX - 1) / 2;
+	}
+
 	const char *cbuf = static_cast<const char *>(buf);
 
 	for(size_t i = 0; i != nbyte; ++i){
