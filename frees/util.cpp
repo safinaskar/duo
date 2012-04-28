@@ -1,9 +1,9 @@
 #include <util.h>
 
-extern "C" char *itoa(unsigned long long num, int base, char *buf){
+char *itoa(unsigned long long num, int base, char *buf){
 	static const char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-	if(base < 2 || base > 10 + 26){
+	if(base < 2 || base > 36){
 		base = 10;
 	}
 
@@ -26,7 +26,7 @@ extern "C" char *itoa(unsigned long long num, int base, char *buf){
 	return buf;
 }
 
-extern "C" char *duo_printf_itoa_pad(unsigned long long num, int base, char *buf, char pad, int width){
+char *duo_printf_itoa_pad(unsigned long long num, int base, char *buf, char pad, int width){
 	if(width > ITOA_SIZE - 1){
 		width = ITOA_SIZE - 1;
 	}

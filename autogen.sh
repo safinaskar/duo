@@ -7,7 +7,7 @@ set -e
 TAB="$(printf '\t\n')"
 
 # $SOURCES will contain new line symbols on all machines I tested. But this doesn't matter for my code
-SOURCES="$({ echo kprintfm/start.S && find * -name '*.cpp' && echo kprintfm/kprintf.cpp; } | sort | uniq)"
+SOURCES="$({ find * \( -name '*.S' -o -name '*.cpp' \) && echo kprintfm/kprintf.cpp && echo fus/printf.cpp; } | sort | uniq)"
 
 # But $OBJS will not contain new line symbols. It will contain spaces
 OBJS="$(echo "$SOURCES" | tr ' ' '\n' | sed 's/\.[^.]*$/.o/' | tr '\n' ' ')"
@@ -29,8 +29,7 @@ CXXWARNS       = $(WARNS) -Wctor-dtor-privacy -Wnon-virtual-dtor -Wstrict-null-s
 
 CPPFLAGS       =
 
-# Strict aliasing is not for OS kernel
-CXXFLAGS       = -O3 -g $(CXXWARNS) -Wno-missing-field-initializers -fno-rtti -fno-strict-aliasing
+CXXFLAGS       = -O3 -g $(CXXWARNS) -Wno-missing-field-initializers
 ASFLAGS        =
 LDFLAGS        = -O3
 
@@ -38,9 +37,10 @@ LDFLAGS        = -O3
 DUO_FLAGS      = -m32
 
 # Unfortunately, -ffreestanding is valid for C++, but -fno-hosted is invalid o_O. -ffreestanding is equivalent to -fno-builtin, except for `main' function (proof: gcc sources)
-DUO_CPPFLAGS   = -MMD -nostdinc -Ifrees/include
+DUO_CPPFLAGS   = -MMD -nostdinc -Ifrees/include -Ifus
 
-DUO_CXXFLAGS   = -std=gnu++98 -ffreestanding -fno-rtti -fno-stack-protector
+# Strict aliasing is not for OS kernel
+DUO_CXXFLAGS   = -std=gnu++98 -ffreestanding -fno-rtti -fno-stack-protector -fno-strict-aliasing -fno-exceptions
 
 EOF
 
@@ -77,7 +77,10 @@ EOF
 
 	sed 's/^TAB/\t/' << "EOF"
 kprintfm/kprintf.cpp: frees/printf.sh
-TAB@echo "  GEN     $@" && VPREFIX="vk" PREFIX="k" SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="kmsg_fputc" DATA_ACTION="kmsg_write" BEFORE="$$(echo "#include \"kmsg.h\"" && echo "#include \"kprintf.h\"")" $< > $@
+TAB@echo "  GEN     $@" && VPREFIX="vk" PREFIX="k" SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="kmsg_fputc" DATA_ACTION="kmsg_write"    BEFORE="$$(echo "#include \"kmsg.h\"" && echo "#include \"kprintf.h\"")" $< > $@
+
+fus/printf.cpp: frees/printf.sh
+TAB@echo "  GEN     $@" && VPREFIX="v"  PREFIX=""  SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="putchar"    DATA_ACTION="console_write" BEFORE="$$(echo "#include \"../kprintfm/console.h\"" && echo "#include <stdio.h>")" $< > $@
 
 duo: $(OBJS)
 TAB@echo "  LD      $@" && $(CXX) $(DUO_FLAGS) -static -nostdlib -Wl,-Ttext-segment=0x100000 $(LDFLAGS) -o $@ $(OBJS) -lgcc && chmod -x $@
@@ -88,7 +91,7 @@ TABfind . -name '*.o' -delete && rm -f duo
 distclean: clean
 
 maintainer-clean: distclean
-TABfind . -name '*.d' -delete && rm -f Makefile kprintfm/kprintf.cpp
+TABfind . -name '*.d' -delete && rm -f Makefile kprintfm/kprintf.cpp fus/printf.cpp
 
 rcs-clean: maintainer-clean
 

@@ -63,6 +63,7 @@ static void new_line(){
 }
 
 /* Always returns nbyte */
+/* REAL: real console, which ignores non-printing charasters */
 ssize_t console_write(const void *buf, size_t nbyte){
 	if(nbyte > (SIZE_MAX - 1) / 2){
 		nbyte = (SIZE_MAX - 1) / 2;
@@ -74,6 +75,12 @@ ssize_t console_write(const void *buf, size_t nbyte){
 		switch(cbuf[i]){
 			case '\n':
 				new_line();
+				break;
+			case '\b':
+				if(col != 0){
+					--col;
+					screen[2 * (row * cols + col)] = ' ';
+				}
 				break;
 			default:
 				screen[2 * (row * cols + col)] = uint8_t(cbuf[i]);

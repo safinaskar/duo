@@ -1,0 +1,104 @@
+All keys of my laptop's keyboard
+--------------------------------
+01 Esc
+3b F1
+3c F2
+3d F3
+3e F4
+3f F5
+40 F6
+41 F7
+42 F8
+43 F9
+44 F10
+57 F11
+58 F12
+-- No Sound
+52 Insert
+37 Print Screen
+53 Delete
+49 Page Up
+51 Page Down
+47 Home
+4f End
+29 `
+02 1
+03 2
+04 3
+05 4
+06 5
+07 6
+08 7
+09 8
+0a 9
+0b 0
+0c -
+0d =
+0e Backspace
+45 Num Lock
+35 Num /
+37 Num *
+4a Num -
+0f Tab
+10 Q
+11 W
+12 E
+13 R
+14 T
+15 Y
+16 U
+17 I
+18 O
+19 P
+1a [
+1b ]
+2b \
+47 Num 7 aka Home
+48 Num 8 aka Up
+49 Num 9 aka Page Up
+4e Num +
+3a Caps Lock
+1e A
+1f S
+20 D
+21 F
+22 G
+23 H
+24 J
+25 K
+26 L
+27 ;
+28 '
+1c Enter
+4b Num 4 aka Left
+4c Num 5
+4d Num 6 aka Right
+2a Left Shift
+2c Z
+2d X
+2e C
+2f V
+30 B
+31 N
+32 M
+33 ,
+34 .
+35 /
+36 Right Shift
+4f Num 1 aka End
+50 Num 2 aka Down
+51 Num 3 aka Page Down
+1c Num Enter
+1d Left Ctrl
+-- Fn
+5b Left Windows
+38 Left Alt
+39 Space
+38 Right Alt
+1d Right Ctrl
+48 Up
+4b Left
+50 Down
+4d Right
+52 Num 0 aka Insert
+53 Num . aka Delete
