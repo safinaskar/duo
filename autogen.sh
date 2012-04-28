@@ -29,9 +29,10 @@ CXXWARNS       = $(WARNS) -Wctor-dtor-privacy -Wnon-virtual-dtor -Wstrict-null-s
 
 CPPFLAGS       =
 
-CXXFLAGS       = -O3 -g $(CXXWARNS) -Wno-missing-field-initializers
+# TODO: add -O3
+CXXFLAGS       = -g $(CXXWARNS) -Wno-missing-field-initializers
 ASFLAGS        =
-LDFLAGS        = -O3
+LDFLAGS        =
 
 # Flags for all building stages
 DUO_FLAGS      = -m32
@@ -39,8 +40,8 @@ DUO_FLAGS      = -m32
 # Unfortunately, -ffreestanding is valid for C++, but -fno-hosted is invalid o_O. -ffreestanding is equivalent to -fno-builtin, except for `main' function (proof: gcc sources)
 DUO_CPPFLAGS   = -MMD -nostdinc -Ifrees/include -Ifus
 
-# Strict aliasing is not for OS kernel
-DUO_CXXFLAGS   = -std=gnu++98 -ffreestanding -fno-rtti -fno-stack-protector -fno-strict-aliasing -fno-exceptions
+# Strict aliasing is not for OS kernel. TODO: starting with -w
+DUO_CXXFLAGS   = -std=gnu++98 -ffreestanding -fno-rtti -fno-stack-protector -fno-strict-aliasing -fno-exceptions -w -g -fpermissive -O0
 
 EOF
 
