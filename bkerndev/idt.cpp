@@ -5,7 +5,7 @@
 *  Notes: No warranty expressed or implied. Use at own risk. */
 #include <frees/string.h>
 
-#include "system.h"
+#include "system.hpp"
 
 /* Defines an IDT entry */
 struct idt_entry

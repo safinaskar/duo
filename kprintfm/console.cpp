@@ -2,9 +2,9 @@
 
 #include <stdint.h>
 
-#include "io.h"
+#include "io.hpp"
 
-#include "console.h"
+#include "console.hpp"
 
 static volatile uint8_t *const screen = reinterpret_cast<volatile uint8_t *>(0xb8000);
 

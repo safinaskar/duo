@@ -3,9 +3,9 @@
 *  Desc: Interrupt Request management
 *
 *  Notes: No warranty expressed or implied. Use at own risk. */
-#include "system.h"
+#include "system.hpp"
 
-#include "../kprintfm/io.h"
+#include "../kprintfm/io.hpp"
 
 /* These are own ISRs that point to our special IRQ handler
 *  instead of the regular 'fault_handler' function */

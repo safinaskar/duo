@@ -21,4 +21,4 @@ char *fgets(char *s, int, FILE *);
 
 }
 
-#endif // _DUO_FUS_STDIO_H
+#endif // ! _DUO_FUS_STDIO_H

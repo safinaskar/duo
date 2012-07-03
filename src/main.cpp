@@ -2,12 +2,12 @@
 
 #include "../kprintfm/multiboot2.h"
 
-#include "../kprintfm/console.h"
-#include "../kprintfm/kprintf.h"
+#include "../kprintfm/console.hpp"
+#include "../kprintfm/kprintf.hpp"
 
-#include "../bkerndev/system.h"
+#include "../bkerndev/system.hpp"
 
-#include "memory.h"
+#include "memory.hpp"
 
 // Begin of bkerndev
 static volatile char console_buffer[20000]; // TODO: ready for read(...)ing // TODO: exploit me
@@ -16,7 +16,7 @@ static volatile int console_buffer_size = 0; // TODO: exploit me
 static volatile bool console_force_reading = 0;
 
 #include <frees/string.h>
-#include "../kprintfm/io.h"
+#include "../kprintfm/io.hpp"
 /* TODO: Вырубается ли irq на время его обработки? */
 void irq_keyboard(struct regs *){
 	/* REAL: other keys (если читать up'ы, то там много интересного, что может помочь отличить клавиши), support shifts, right alt and left alt are different keys etc, support numpad */
@@ -96,11 +96,11 @@ ssize_t console_read(void *buf, size_t nbyte){
 /// Begin of fus (fake user space)
 
 void *operator new[](size_t size){
-	return kalloc(size);
+	return malloc(size);
 }
 
 void operator delete[](void *ptr){
-	return kfree(ptr);
+	return free(ptr);
 }
 
 #include <stdio.h>

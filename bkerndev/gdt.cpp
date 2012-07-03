@@ -3,7 +3,7 @@
 *  Desc: Global Descriptor Table management
 *
 *  Notes: No warranty expressed or implied. Use at own risk. */
-#include "system.h"
+#include "system.hpp"
 
 /* Defines a GDT entry */
 struct gdt_entry

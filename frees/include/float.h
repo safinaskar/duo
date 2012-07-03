@@ -3,4 +3,4 @@
 
 #define DBL_MAX __DBL_MAX__
 
-#endif // _DUO_FLOAT_H
+#endif // ! _DUO_FLOAT_H

@@ -7,4 +7,4 @@ void errx(int status, const char *format, ...);
 
 }
 
-#endif // _DUO_FUS_ERR_H
+#endif // ! _DUO_FUS_ERR_H

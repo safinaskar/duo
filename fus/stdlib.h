@@ -3,4 +3,4 @@
 
 #include <frees/stdlib.h>
 
-#endif // _DUO_FUS_STDLIB_H
+#endif // ! _DUO_FUS_STDLIB_H

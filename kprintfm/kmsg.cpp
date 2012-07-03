@@ -6,9 +6,9 @@
 
 #include <frees/string.h>
 
-#include "console.h"
+#include "console.hpp"
 
-#include "kmsg.h"
+#include "kmsg.hpp"
 
 ssize_t kmsg_write(const void *buf, size_t nbyte){
 	static const char kernel_name[] = "[duo] ";

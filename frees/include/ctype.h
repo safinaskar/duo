@@ -13,4 +13,4 @@ int isspace(int c);
 }
 #endif
 
-#endif // _DUO_CTYPE_H
+#endif // ! _DUO_CTYPE_H

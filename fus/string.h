@@ -3,4 +3,4 @@
 
 #include <frees/string.h>
 
-#endif // _DUO_FUS_STRING_H
+#endif // ! _DUO_FUS_STRING_H

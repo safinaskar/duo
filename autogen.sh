@@ -24,8 +24,8 @@ done
 
 CXX            = g++
 
-WARNS          = -Wall -Wextra -Wformat=2 -Wuninitialized -Winit-self -Wmissing-include-dirs -Wswitch-default -Wunused -Wunused-local-typedefs -Wuninitialized -Wstrict-aliasing=1 -Wstrict-overflow=5 -Wfloat-equal -Wundef -Wshadow -Wunsafe-loop-optimizations -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wsign-conversion -Wlogical-op -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute -Wredundant-decls -Wunreachable-code -Winline -Wdisabled-optimization -Wstack-protector -Woverlength-strings -Wcomment -Wunused-macros
-CXXWARNS       = $(WARNS) -Wctor-dtor-privacy -Wnon-virtual-dtor -Wstrict-null-sentinel -Wold-style-cast -Woverloaded-virtual -Wsign-promo
+WARNS          = -Wall -Wextra -Wformat=2 -Wuninitialized -Winit-self -Wmissing-include-dirs -Wswitch-default -Wunused -Wunused-local-typedefs -Wuninitialized -Wstrict-aliasing=1 -Wstrict-overflow=5 -Wfloat-equal -Wundef -Wshadow -Wunsafe-loop-optimizations -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wlogical-op -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute -Wredundant-decls -Wunreachable-code -Winline -Wdisabled-optimization -Wstack-protector -Woverlength-strings -Wcomment -Wunused-macros
+CXXWARNS       = $(WARNS) -Wno-sign-conversion -Wctor-dtor-privacy -Wnon-virtual-dtor -Wstrict-null-sentinel -Wold-style-cast -Woverloaded-virtual -Wsign-promo
 
 CPPFLAGS       =
 
@@ -78,10 +78,10 @@ EOF
 
 	sed 's/^TAB/\t/' << "EOF"
 kprintfm/kprintf.cpp: frees/printf.sh
-TAB@echo "  GEN     $@" && VPREFIX="vk" PREFIX="k" SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="kmsg_fputc" DATA_ACTION="kmsg_write"    BEFORE="$$(echo "#include \"kmsg.h\"" && echo "#include \"kprintf.h\"")" $< > $@
+TAB@echo "  GEN     $@" && VPREFIX="vk" PREFIX="k" SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="kmsg_fputc" DATA_ACTION="kmsg_write"    BEFORE="$$(echo "#include \"kmsg.hpp\"" && echo "#include \"kprintf.hpp\"")" $< > $@
 
 fus/printf.cpp: frees/printf.sh
-TAB@echo "  GEN     $@" && VPREFIX="v"  PREFIX=""  SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="putchar"    DATA_ACTION="console_write" BEFORE="$$(echo "#include \"../kprintfm/console.h\"" && echo "#include <stdio.h>")" $< > $@
+TAB@echo "  GEN     $@" && VPREFIX="v"  PREFIX=""  SHORT_ARGS="" LONG_ARGS="" CHAR_ACTION="putchar"    DATA_ACTION="console_write" BEFORE="$$(echo "#include \"../kprintfm/console.hpp\"" && echo "#include <stdio.h>")" $< > $@
 
 duo: $(OBJS)
 TAB@echo "  LD      $@" && $(CXX) $(DUO_FLAGS) -static -nostdlib -Wl,-Ttext-segment=0x100000 $(LDFLAGS) -o $@ $(OBJS) -lgcc && chmod -x $@
@@ -94,7 +94,8 @@ distclean: clean
 maintainer-clean: distclean
 TABfind . -name '*.d' -delete && rm -f Makefile kprintfm/kprintf.cpp fus/printf.cpp
 
-rcs-clean: maintainer-clean
+# Version control system clean (this doesn't mean any particular VCS), not to be confused with CVS
+vcs-clean: maintainer-clean
 
 EOF
 

@@ -12,4 +12,4 @@ int atoi(const char *str);
 }
 #endif
 
-#endif // _DUO_FREES_STDLIB_H
+#endif // ! _DUO_FREES_STDLIB_H

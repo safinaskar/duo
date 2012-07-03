@@ -3,4 +3,4 @@
 
 double fabs(double x);
 
-#endif // _DUO_FUS_MATH_H
+#endif // ! _DUO_FUS_MATH_H
