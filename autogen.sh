@@ -1,6 +1,8 @@
 #!/bin/sh
 
-# No, I didn't steal Linux build system interface. I use plain makefile and messages such as "  CC      frees/string.o", because it is really comfortable. But I don't use "make mrproper" (if you want real cleanning, just type "make maintainer-clean")
+# No, I didn't steal Linux build system interface. I use plain makefile and messages such as "  CC      frees/string.o", because this is really comfortable. But I don't use "make mrproper" (if you want real cleanning, just type "make maintainer-clean")
+
+# LATER: понимает ли произвольный Makefile $<? вообще разобраться с мейкфайлами
 
 set -e
 
@@ -93,9 +95,6 @@ distclean: clean
 
 maintainer-clean: distclean
 TABfind . -name '*.d' -delete && rm -f Makefile kprintfm/kprintf.cpp fus/printf.cpp
-
-# Version control system clean (this doesn't mean any particular VCS), not to be confused with CVS
-vcs-clean: maintainer-clean
 
 EOF
 
