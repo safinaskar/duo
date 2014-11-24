@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# No, I didn't steal Linux build system interface. I use plain makefile and messages such as "  CC      frees/string.o", because this is really comfortable. But I don't use "make mrproper" (if you want real cleanning, just type "make maintainer-clean")
+# No, I didn't steal Linux build system interface. I use plain makefile and messages such as "  CC      frees/string.o", because this is really comfortable. But I don't use "make mrproper" (if you want full cleanning, just type "make maintainer-clean")
 
 # LATER: понимает ли произвольный Makefile $<? вообще разобраться с мейкфайлами
 
@@ -9,7 +9,7 @@ set -e
 TAB="$(printf '\t\n')"
 
 # $SOURCES will contain new line symbols on all machines I tested. But this doesn't matter for my code
-SOURCES="$({ find * \( -name '*.S' -o -name '*.cpp' \) && echo kprintfm/kprintf.cpp && echo fus/printf.cpp; } | sort | uniq)"
+SOURCES="$({ find . \( -name '*.S' -o -name '*.cpp' \) | sed 's~^\./~~' && echo kprintfm/kprintf.cpp && echo fus/printf.cpp; } | sort | uniq)"
 
 # But $OBJS will not contain new line symbols. It will contain spaces
 OBJS="$(echo "$SOURCES" | tr ' ' '\n' | sed 's/\.[^.]*$/.o/' | tr '\n' ' ')"

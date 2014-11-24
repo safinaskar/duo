@@ -1,5 +1,5 @@
-All keys of my laptop's keyboard
---------------------------------
+All keys of my laptop's keyboard (Dell Inspiron)
+------------------------------------------------
 01 Esc
 3b F1
 3c F2

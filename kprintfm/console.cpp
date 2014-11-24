@@ -26,7 +26,8 @@ static void set_cursor(){
 static void clear(){
 	// We cannot use memset, because `screen' is `volatile'
 	for(int i = 0; i != rows * cols; ++i){
-		screen[2 * i] = ' '; // Qemu has bug: if we write NUL charasters here, this will not actually clear screen in curses mode. So, we need to write spaces
+		screen[2 * i] = ' '; // Qemu has bug: if we write NUL charasters here, this will not actually clear screen in curses mode. So, we need to write spaces. https://bugs.launchpad.net/qemu/+bug/922076
+		// This is no such bug in 1.4.0, but we still use spaces for compability reasons
 	}
 
 	row = 0;
@@ -41,7 +42,7 @@ void console_init(){
 		screen[2 * i + 1] = 0x7; // Light gray on black
 	}
 
-	// We need to clear screen at boot time, because Qemu doesn't do this
+	// We need to clear screen at boot time, because Qemu doesn't do this. https://bugs.launchpad.net/qemu/+bug/922076
 	clear();
 }
 

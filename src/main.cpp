@@ -77,7 +77,7 @@ void irq_keyboard(struct regs *){
 	}
 }
 
-// TODO: нормальный read, который бы мог возвращять курсор назад
+// TODO: нормальный read, который бы мог возвращать курсор назад
 ssize_t console_read(void *buf, size_t nbyte){
 	if(nbyte > console_buffer_size - console_buffer_begin){
 		while(!console_force_reading);
